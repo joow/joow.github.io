@@ -1,0 +1,106 @@
+---
+layout: post
+title: Débuter avec Gradle
+---
+
+[Gradle] est un outil de construction automatisé. Il permet d'automatiser toutes les étapes d'un projet, de sa construction à son déploiement en passant par l'exécution des tests et ne se limite pas à ses étapes. Il possède un DSL Groovy permettant de facilement configurer l'exécution des différentes tâches et peut être étendu par le biais de plugins, écrits en Groovy, Java ou encore Scala.
+Il essaie de reprendre le meilleur de [Ant] (puissance et flexibilité) et de [Maven] (convention et gestion des dépendances). Il n'impose aucune limite quant aux possibilités offertes et offre une grande liberté aux développeurs (que certains regretteront). Je résumerai les trois outils comme ceci : Ant n'impose et ne suggère rien, Maven impose et Gradle ne fait que suggérer.
+De mon point de vue ses avantages sont :
+
+1. Lisibilité des scripts (DSL Groovy à la place de XML)
+2. Extensible facilement
+3. Modernité
+
+Néanmoins il est important de garder à l'esprit qu'il présente certains inconvénients :
+
+1. Support moindre que Ant et Maven.
+2. Moins de plugins disponibles (et surtout pas de centralisation des plugins)
+
+Cet article montre comment débuter avec Gradle un projet Java et fera certainement l'objet dautres articles poussant plus loin l'utilisation de Gradle.
+
+## Installer Gradle
+L'installation de Gradle est équivalent à celle de Ant ou Maven et se déroule en trois étapes :
+
+1. Télécharger l'archive de Gradle sur cette [page](http://www.gradle.org/downloads).
+2. Décompresser l'archive.
+3. Créer la variable d'environnement `GRADLE_HOME` pointant vers le répertoire contenant Gradle et ajouter `GRADLE_HOME\bin` au `PATH`.
+
+Une fois ceci fait la commande `gradle -v` exécutée dans un terminal devrait afficher les lignes suivantes :
+
+	------------------------------------------------------------
+	Gradle 1.11
+	------------------------------------------------------------
+
+	Build time:   2014-02-11 11:34:39 UTC
+	Build number: none
+	Revision:     a831fa866d46cbee94e61a09af15f9dd95987421
+
+	Groovy:       1.8.6
+	Ant:          Apache Ant(TM) version 1.9.2 compiled on July 8 2013
+	Ivy:          2.2.0
+	JVM:          1.7.0_51 (Oracle Corporation 24.51-b03)
+	OS:           Linux 3.13.7-1-ARCH amd64
+
+## Initialiser un projet
+Il n'existe pas aujourd'hui de façon standard de créer un nouveau projet avec Gradle. Nous allons voir les différents moyens de débuter.
+Commencer par créer un nouveau répertoire pour le projet et placer vous dans ce répertoire.
+
+### Utiliser la tâche init
+Si vous exécutez la commande `gradle tasks` vous verrez la liste des tâches que vous pouvez exécuter. Gradle utilise le concept de tâches (task) comme cible possible de l'exécution du script. Elles peuvent être comparées aux cibles (target) de Ant **et non aux tâches**.
+Gradle propose désormais la tâche `init` qui comme son nom l'indique permet d'initialiser un projet Gradle. Si vous l'exécutez Gradle va faire deux choses :
+1. Appeler la tâche `wrapper`.
+2. Créer des fichiers d'exemple `build.gradle` et `settings.gradle`.
+
+La tâche `wrapper` permet de générer les fichiers du wrapper Gradle. Ce wrapper peut et **doit** être distribué avec les sources du projet. Il permet de se passer d'installer Gradle pour construire le projet, ce qui est très utile pour les personnes souhaitant construire rapidement votre projet ou pour un serveur d'intégration continue. De plus cela permet de préciser explicitement la version de Gradle à utiliser pour le projet et ainsi éviter d'éventuels problèmes de compatibilité (bien que cela s'arrange beaucoup Gradle a parfois tendance à casser la compatibilité entre différentes versions). Afin d'utiliser le wrapper et non plus Gradle directement, il suffit d'utiliser la commande `gradlew` à la place de `gradle`. La commande va vérifier si vous possédez ou non la version requise de Gradle par le projet (définie par le fichier `gradle/wrapper/gradle-wrapper.properties`), la télécharger si ce n'est pas le cas et enfin exécuter Gradle comme s'il avait été installé.
+
+Le fichier `build.gradle` généré est un fichier de construction d'exemple. Par défaut Gradle utilise ce fichier comme définition de votre construction (comme Ant utilise par défaut build.xml et Maven pom.xml). Il est bien entendu possible de nommer différemment ce fichier et d'utiliser l'argument `b <fichier.gradle>` pour indiquer à Gradle quel fichier utiliser.
+Enfin le fichier `settings.gradle` permet de stocker des propriétés que Gradle exposera automatiquement lors de la construction d'un projet. Nous reviendrons peut-être plus tard sur son utilisation, pour le moment vous pouvez le supprimer.
+
+### Utiliser le plugin build-init
+Sans le savoir la première méthode décrite ci-dessus utilise le plugin `build-init`. Tout comme Maven Gradle utilise des plugins pour apporter certaines capacités à la construction de votre projet. Par exemple le plugin `build-init` permet d'initialiser un nouveau projet. Normalement vous devez définir quels plugins vous souhaitez utiliser, mais celui-ci est automatiquement appliqué à tout projet. Il est possible de personnaliser le type de projet à initialiser en utilisant l'argument `--type <type>`. Si cet argument n'est pas fourni le type `basic` est utilisé (c'est ce que nous avons fait ci-dessus). Il existe pour le moment les types suivants :
+
+* `pom` qui permet de convertir un pom Maven en build Gradle.
+* `java-library` pour initialiser un projet Java.
+* `scala-library` pour un projet Scala.
+* `groovy-library` pour un projet ... Groovy !
+
+Si vous lancez la commande `gradle init --type java-library` vous verrez que Gradle à nouveau génère les fichiers pour le wrapper et crée les fichiers `build.gradle` et `settings.gradle`. En plus il crée les répertoires de sources pour le code de production et le code de test utilisé par défaut par un projet Java (`src/main/java` et `src/test/java`).
+Par contre comme vous le voyez et si vous connaissez déjà les archétypes Maven le choix est relativement limité.
+
+### Utiliser un archétype
+Une dernière solution pour initialiser un projet Gradle est d'utiliser le plugin [templates] apportant la fonctionnalité des archétypes à Gradle. Ce plugin n'étant pas distribué avec Gradle, il faut l'importer dans votre fichier de build en ajoutant les lignes suivantes au fichier `build.gradle` :
+{% highlight groovy %}
+buildscript {
+    repositories {
+        maven {
+            url 'http://dl.bintray.com/cjstehno/public'
+        }
+    }
+    dependencies {
+        classpath 'gradle-templates:gradle-templates:1.5'
+    }
+}
+
+apply plugin: 'templates'
+{% endhighlight %}
+
+Une fois ceci-fait en utilisant la commande `gradle tasks` vous pourrez voir une liste de tâches de type init* dans la rubrique Templates, par exemple initJavaProject. La commande `gradle initJavaProject` vous permettra par exemple d'initialiser un projet Java. Il est également possible dans Gradle d'abréger le nom d'une tâche à exécuter, `gradle iJP` va permettre d'exécuter la tâche `initJavaProject`. Cela ne fonctionne bien sûr pas si plusieurs noms de tâches correspondent.
+
+Il est important de noter que ce plugin n'est pas standard. Personnellement je recommande d'utiliser plutôt le plugin `build-init` qui bien qu'en phase d'incubation est distribué en standard avec Gradle. De plus l'initialisation d'un projet (création des répertoires sources) n'est pas une opération très coûteuse. De plus le plugin `templates` ne permet pas de générer les fichiers du wrapper Gradle. Si vous souhaitez générer ces fichiers il suffit de lancer la commande `gradle wrapper` (ou `gradle w` pour les plus pressés !).
+
+## Modifier la version du wrapper
+La version de Gradle utilisée par le wrapper est définie par le fichier `gradle/wrapper/gradle-wrapper.properties`. Par défaut c'est la version de Gradle utilisée lors de la création des fichiers qui est utilisée. Comment changer cette version ? Il est possible de modifier directement ce fichier. Mais la manière la plus propre est de configurer la tâche `wrapper` dans votre fichier de construction (`build.gradle`) comme ceci :
+{% highlight groovy %}
+task wrapper(type: Wrapper) {
+	gradleVersion = '1.10'
+}
+{% endhighlight %}
+Nous reviendrons plus en détail sur le fonctionnement de ces lignes mais pour résumer nous déclarons une tâche nommée `wrapper` de type `Wrapper` et nous spécifions la version de Gradle à utiliser (ici 1.10). Si vous exécutez la tâche wrapper à nouveau vous verrez que l'URL de la distribution Gradle a été mise à jour dans le fichier de configuration du wrapper.
+
+
+Ceci conclut ce premier article, présentant Gradle et comment initialiser un projet Java avec. Nous verrons la prochaine fois comment construire notre projet Java.
+
+[Gradle]: http://www.gradle.org/
+[Ant]: http://ant.apache.org/
+[Maven]: http://maven.apache.org/
+[templates]: https://github.com/townsfolk/gradle-templates
