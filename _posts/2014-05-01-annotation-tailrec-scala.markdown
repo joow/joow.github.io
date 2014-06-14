@@ -38,4 +38,5 @@ Si vous essayez de mettre l'annotation `@tailrec`, le compilateur Scala vous dir
 	error: could not optimize @tailrec annotated method occurrence: it contains a recursive call not in tail position
        	if (s.head == c) 1 + occurrence(s.tail, c) else occurrence(s.tail, c)
                                        ^
+                                       
 En effet dans ce cas lorsque le premier caractère de la chaîne est égale au caractère recherché, on ajoute 1 à l'appel récursif de la fonction, il faut donc appeler la fonction puis ajouter 1 à son résultat. Bien que cette dernière solution soit plus élégante encore, on préfèrera la première solution car elle permettra au compilateur Scala d'optimiser le code généré. Très souvent la transformation d'une fonction récursive à une fonction récursive terminale nécessite la création d'une sous-fonction utilisant un (ou plusieurs) accumulateurs permettant de propager le calcul.
