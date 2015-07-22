@@ -9,7 +9,25 @@ layout: default
   <ul class="posts">
     {% for post in site.posts %}
       <li>
-        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+        <span class="post-date">
+          {{ post.date | date: "%-d" }}
+          {% assign month = post.date | date: "%-m" %}
+          {% case month %}
+            {% when '1' %}janvier
+            {% when '2' %}février
+            {% when '3' %}mars
+            {% when '4' %}avril
+            {% when '5' %}mai
+            {% when '6' %}juin
+            {% when '7' %}juillet
+            {% when '8' %}août
+            {% when '9' %}septembre
+            {% when '10' %}octobre
+            {% when '11' %}novembre
+            {% when '12' %}décembre
+          {% endcase %}
+          {{ post.date | date: "%Y" }}
+        </span>
         <a class="post-link" href="{{ post.url | prepend: site.github.url }}">{{ post.title }}</a>
       </li>
     {% endfor %}
