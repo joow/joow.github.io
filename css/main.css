@@ -239,6 +239,7 @@ strong {
   border-radius: 3px;
   font-size: 15px;
   white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .post code { padding: 1px 5px; }
