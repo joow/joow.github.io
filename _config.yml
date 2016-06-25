@@ -6,3 +6,6 @@ description: "Blog personnel sur Java, la JVM, Scala, Groovy, Clojure, les outil
 twitter: {
 	username: joowgir
 }
+
+gems:
+  - jemoji
