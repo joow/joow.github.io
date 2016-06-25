@@ -9,3 +9,4 @@ twitter: {
 
 gems:
   - jemoji
+  - jekyll-feed
