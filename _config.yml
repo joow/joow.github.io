@@ -3,11 +3,6 @@ title: "Jawa : Java, JVM et plus si affinité..."
 email: bgiraudou@gmail.com
 description: "Blog personnel sur Java, la JVM, Scala, Groovy, Clojure, les outils de construction comme Gradle ou Maven, le mouvement DevOps et bien plus encore."
 
-markdown: kramdown
-
 twitter: {
 	username: joowgir
 }
-
-gems:
-  - jemoji
