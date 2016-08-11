@@ -56,6 +56,8 @@ permet de faire la même chose pour les applications graphiques :
   * [robomongo](https://robomongo.org/) : un client graphique pour [MongoDB]
   * [slack](https://slack.com/) : un logiciel de communication moderne
   * [visual-studio-code](https://code.visualstudio.com/) : un excellent éditeur de code
+  * [firefox-fr](https://www.mozilla.org/fr/firefox/new/) : le navigateur Web de la fondation Mozilla  
+  <ins datetime="2016-08-11">Attention, il faut déjà installer un dépôt supplémentaire : `brew tap caskroom/versions`</ins>
 
 Certaines applications doivent être installées manuellement, comme :
 
