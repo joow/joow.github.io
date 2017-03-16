@@ -28,11 +28,11 @@ layout: default
           {% endcase %}
           {{ post.date | date: "%Y" }}
         </span>
-        <a class="post-link" href="{{ post.url | prepend: site.github.url }}">{{ post.title }}</a>
+        <a class="post-link" href="{{ post.url }}">{{ post.title }}</a>
       </li>
     {% endfor %}
   </ul>
 
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.github.url }}">via RSS</a></p>
+  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
 
 </div>

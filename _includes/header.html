@@ -2,7 +2,7 @@
 
   <div class="wrap">
 
-    <a class="site-title" href="{{ site.github.url }}/">{{ site.title }}</a>
+    <a class="site-title" href="/">{{ site.title }}</a>
 
     <nav class="site-nav">
       <a href="#" class="menu-icon">
@@ -18,7 +18,7 @@
       </a>
       <div class="trigger">
         {% for page in site.pages %}
-          <a class="page-link" href="{{ page.url | prepend: site.github.url }}">{{ page.title }}</a>
+          <a class="page-link" href="{{ page.url }}">{{ page.title }}</a>
         {% endfor %}
       </div>
     </nav>
