@@ -7,6 +7,6 @@ twitter: {
 	username: joowgir
 }
 
-gems:
+plugins:
   - jemoji
   - jekyll-feed
