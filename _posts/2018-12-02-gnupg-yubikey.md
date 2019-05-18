@@ -123,11 +123,11 @@ Montez la partition :
 
 Et créez un système de fichiers :
 
-    sudo mkfs.ext4 /dev/sdc1 -L usb (permet de nommer la clé "usb")
+    sudo mkfs.ext4 /dev/mapper/usb -L usb (permet de nommer la clé "usb")
 
 Enfin montez la partition et copiez le répertoire de [GnuPG] :
 
-    sudo mount /dev/sdc1 /mnt
+    sudo mount /dev/mapper/usb /mnt
     sudo cp -avi $GNUPGHOME /mnt
 
 Terminez en démontant la partition :
