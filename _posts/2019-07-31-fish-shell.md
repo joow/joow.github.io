@@ -90,7 +90,7 @@ Toutes vos fonctions créées ainsi sont disponibles dans `~/.config/fish/functi
 
 Comme sur macOS la commande `open` permet d'ouvrir un fichier avec son application par défaut.
 
-_Note_ : la commande macOS correspondante n'est pas remplacée par fish si vous l'utilisez sur macOS :smile:
+_Note_ : la commande macOS correspondante n'est pas remplacée par fish si vous l'utilisez sur macOS 😉
 
 ## Autres
 
@@ -122,4 +122,4 @@ benoit@arch ~> ls --all
 ...
 ```
 
-Bref, je recommande vivement d'essayer au moins fish, pour son apparente simplicité et sa puissance :smiley:
+Bref, je recommande vivement d'essayer au moins fish, pour son apparente simplicité et sa puissance 😃
