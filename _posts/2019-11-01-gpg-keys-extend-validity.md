@@ -72,9 +72,9 @@ la date de validité :
 
 Exportez la clé principale et les sous-clés et sauvegardez les sur la clé USB chiffrée :
 
-    gpg --armor --export-secret-keys $KEYID > $GNUPGHOME/mastersub.key
-    gpg --armor --export-secret-subkeys $KEYID > $GNUPGHOME/sub.key
-    sudo cp -avi $GNUPGHOME >/mnt/encrypted-usb
+    gpg --armor --export-secret-keys $KEYID >$GNUPGHOME/mastersub.key
+    gpg --armor --export-secret-subkeys $KEYID >$GNUPGHOME/sub.key
+    sudo cp -avi $GNUPGHOME /mnt/encrypted-usb
 
 Vous pouvez éventuellement supprimer sur la clé USB chiffrée l'ancien répertoire `tmp.XXX` qui contient la sauvegarde 
 précédente :
@@ -105,3 +105,6 @@ Il ne reste plus qu'à transférer les nouvelles sous-clés sur votre clé YubiK
     save
 
 Vous pouvez enfin redémarrer et stockez en lieu sûr votre clé USB chiffrée pour la ressortir l'année prochaine.
+
+---
+[Tails]: https://tails.boum.org/
