@@ -37,17 +37,21 @@ Vérifiez que l'entropie de votre système soit suffisante :
 
     cat /proc/sys/kernel/random/entropy_avail
 
-Une valeur proche de 4096 est vivement recommandé, vu que nous allons générer des clés d'une longueur de 4096 bits.  
+Une valeur supérieure à 2000 est suffisante.  
 Si ce n'est pas le cas essayez d'installer rng-tools.
 
 ## Création des clés
 
 Générez un répertoire de travail temporaire pour [GnuPG] :
 
-    export GNUPGHOME=$(mktemp -d); echo $GNUPGHOME
+    export GNUPGHOME=$(mktemp -d)
+    cd $GNUPGHOME
 
 Téléchargez le fichier de configuration de [GnuPG] disponible [ici](https://raw.githubusercontent.com/drduh/config/master/gpg.conf).  
-Utilisez le navigateur Tor pour le télécharger, vous n'y aurez pas accès directement avec `wget`.
+
+    wget https://raw.githubusercontent.com/drduh/config/master/gpg.conf
+
+Utilisez le navigateur Tor pour le télécharger si le téléchargement avec `wget` ne fonctionne pas.
 
 Vous pouvez désormais vous déconnecter du réseau pour la suite.
 
@@ -56,7 +60,10 @@ Vous pouvez désormais vous déconnecter du réseau pour la suite.
 Nous allons tout d'abord créer la clé principale.  
 Elle sera uniquement utilisée pour certifier les autres clés que nous utiliserons au quotidien.
 
-Créez une nouvelle clé RSA de signature d'une longueur de 4096 bits sans date d'expiration et entrez vos informations personnelles.
+Créez une nouvelle clé RSA de signature d'une longueur de 4096 bits sans date d'expiration et entrez vos informations 
+personnelles :
+
+    gpg --expert --full-generate-key
 
 Exportez l'identifiant de la clé afin de pouvoir le réutiliser plus tard :
 
@@ -253,7 +260,8 @@ Et vérifier la signature :
 
 ## Authentification
 
-Pour terminer vous pouvez également utiliser la clé d'authentification afin de vous authentifier à SSH en utilisant l'agent fourni par [GnuPG].  
+Pour terminer vous pouvez également utiliser la clé d'authentification afin de vous authentifier à SSH en utilisant 
+l'agent fourni par [GnuPG].  
 L'article mentionné en début de billet contient toutes les informations pour sa mise en place.
 
 ---
